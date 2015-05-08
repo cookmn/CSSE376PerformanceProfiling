@@ -232,6 +232,15 @@ public class Level {
 			generateBarrierCollisionBoxes();
 			generateRegularCollisionBoxes();
 			generateGoldObjects();
+			int currentPosition;
+			Graphics2D g = img.createGraphics();
+			for (int r = 0; r < this.map.length; r++) {
+				for (int c = 0; c < this.map[r].length; c++) {
+					currentPosition = this.map[r][c];
+					drawTileImage(currentPosition, r, c, g);
+				}
+			}
+			g.dispose();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -328,17 +337,6 @@ public class Level {
 	 *            the Graphics2D of where the object is painted.
 	 */
 	public void draw(Graphics2D g2) {
-		int currentPosition;
-		// cache the tile background in an image so tiles don't need to be drawn again and again redundantly.
-		Graphics2D g = img.createGraphics();
-		for (int r = 0; r < this.map.length; r++) {
-			for (int c = 0; c < this.map[r].length; c++) {
-				currentPosition = this.map[r][c];
-				drawTileImage(currentPosition, r, c, g);
-			}
-		}
-		g.dispose();
-		// draw cached tiles
 		g2.drawImage(img, 0, 0, img.getWidth(), img.getHeight(), null);
 	}
 
@@ -384,6 +382,10 @@ public class Level {
 	 */
 	public void updateTile(int x, int y, int tileID) {
 		this.map[x][y] = tileID;
+		Graphics2D g = img.createGraphics();
+		drawTileImage(tileID, x, y, g);
+		g.dispose();
+		
 	}
 
 	/**
